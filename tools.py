@@ -44,19 +44,23 @@ def compare_players(name1: str, name2: str, metric: str = None) -> dict:
 
 
 def get_leaderboard(metric: str, top_n: int = 10) -> dict:
-    """Return the top N players ranked by a given metric."""
+    if metric not in df.columns:
+        return {"error": f"'{metric}' is not a valid column. Valid columns are: {list(df.columns)}"}
     top = df.nlargest(top_n, metric)[["name", metric]]
     return top.to_dict(orient="records")
 
 
 def get_correlation(metric1: str, metric2: str) -> dict:
-    """Return the correlation coefficient between two metrics."""
+    for m in (metric1, metric2):
+        if m not in df.columns:
+            return {"error": f"'{m}' is not a valid column. Valid columns are: {list(df.columns)}"}
     corr = df[metric1].corr(df[metric2])
     return {"metric1": metric1, "metric2": metric2, "correlation": round(float(corr), 3)}
 
 
 def get_summary_stats(metric: str) -> dict:
-    """Return mean, median, std, min, max for a metric across all players."""
+    if metric not in df.columns:
+        return {"error": f"'{metric}' is not a valid column. Valid columns are: {list(df.columns)}"}
     return {k: float(v) for k, v in df[metric].describe().to_dict().items()}
 
 

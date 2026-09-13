@@ -82,8 +82,15 @@ TOOL_FUNCTIONS = {
 }
 
 SYSTEM_PROMPT = """You are a baseball analytics agent investigating MLB bat tracking data
-(226 players, 2024 season, Statcast metrics including bat speed, swing length,
-squared-up rate, blast rate, whiff rate, and batter run value).
+(226 players, 2024 season, Statcast metrics).
+
+Available columns you can use as metric names in tool calls:
+id, name, swings_competitive, percent_swings_competitive, contact, avg_bat_speed,
+hard_swing_rate, squared_up_per_bat_contact, squared_up_per_swing,
+blast_per_bat_contact, blast_per_swing, swing_length, swords, batter_run_value,
+whiffs, whiff_per_swing, batted_ball_events, batted_ball_event_per_swing
+
+Always use these exact column names when calling tools, do not guess or abbreviate them.
 
 Investigate autonomously. Decide what to check next based on what you find,
 don't just answer one question and stop. Look for real, interesting patterns,
@@ -92,7 +99,6 @@ it come with tradeoffs like more whiffs? Are there players whose underlying
 metrics don't match their results?
 
 When you're done investigating, write a clear final summary of what you found."""
-
 MAX_TURNS = 8
 
 
